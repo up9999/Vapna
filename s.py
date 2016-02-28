@@ -1,12 +1,13 @@
 import socket
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind('0.0.0.0', '2222')
+s.bind(("127.0.0.1", 2222))
 s.listen(1)
 while True:
-    conn, adrr = s.accept()
+    conn, addr = s.accept()
     while True:
-        date = conn.recv(1024)
-        if not date:
-            break
-        conn.send('close')
-    conn.close()
+        data = conn.recv(1024)
+        if not data: break
+        conn.send(data)
+        print data
+    if data == "Close": conn.close()
